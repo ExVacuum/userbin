@@ -1,0 +1,5 @@
+#!/bin/sh
+
+task context none;
+timew | grep "Tracking" | cut -d " " -f3- | xargs -r -I {} task description="{}" uuids | xargs -r -I {} task "{}" stop;
+task context | tail -n +4 | head -n -1 | cut -d " " -f1 | sed '/^$/d' | smenu "Use Context:" | xargs -r -I {} task context "{}" && task minimal | sed '/^$/d' | tail -n +3 | head -n -1 | awk '{$1=$1};1' | cut -d " " -f3- | smenu "Start Task:" | xargs -r -I {} task description="{}" uuids | xargs -r -I {} task "{}" start

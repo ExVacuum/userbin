@@ -1,0 +1,5 @@
+#!/bin/bash
+
+wallpaperFile=`ls ~/Documents/Pictures/Wallpaper/ | smenu "Choose Wallpaper:" "$1"`
+
+feh --bg-fill ~/Documents/Pictures/Wallpaper/"$wallpaperFile" &

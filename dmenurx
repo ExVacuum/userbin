@@ -1,0 +1,11 @@
+#!/bin/sh
+
+screenx=`scrdim x "$1"`
+echo x
+menux=`expr "$screenx" + 14`
+echo w
+screenw=`scrdim w "$1"`
+menuw=`expr "$screenw" - 28`
+
+echo m
+dmenu_run -p "Run:" -fn "Noto Sans CJK JP:pixelsize=12" -h 24 -x "$menux" -y 14 -w "$menuw" -nb "#39404f" -sb "#5E81AC"

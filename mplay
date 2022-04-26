@@ -1,0 +1,55 @@
+#!/bin/sh
+
+type=`echo -e "Album\nPlaylist\nSong" | smenu "Content Type:" "$1"`
+
+case $type in
+    Album)
+        toplay=`mpc -f "[%albumartist%|%artist%] - %album% - %date%" listall | uniq | sed '/^$/d' | smenu "Play Album:" "$1"`
+
+        IFS="-" 
+        read artist album date <<< "$toplay"
+        IFS="$oldIFS"
+
+        artist=`echo $artist | awk '{$1=$1};1'`
+        album=`echo $album | awk '{$1=$1};1'`
+        date=`echo $date | awk '{$1=$1};1'`
+
+        results=`mpc find any "$artist" album "$album" date "$date" | wc -l`
+
+        if [ "$results" -gt "0" ]; then
+            mpc -q clear && mpc findadd any "$artist" album "$album" date "$date" && mpc -q play
+        fi
+        ;;
+    Playlist)
+        toplay=`mpc lsplaylists | sed '/^$/d' | smenu "Play Playlist:"`
+
+        if [ "$toplay" ]; then
+            mpc -q clear && mpc load "$toplay" && mpc -q play
+        fi
+        ;;
+    Song)
+        toplay=`mpc -f "%title% - %artist% - %album% - %date%" listall | uniq | sed '/^$/d' | smenu "Play Song:" "$1"`
+
+        IFS="-" 
+        read title artist album date <<< "$toplay"
+        IFS="$oldIFS"
+
+        title=`echo $title | awk '{$1=$1};1'`
+        artist=`echo $artist | awk '{$1=$1};1'`
+        album=`echo $album | awk '{$1=$1};1'`
+        date=`echo $date | awk '{$1=$1};1'`
+        
+        results=`mpc find title "$title" artist "$artist" album "$album" date "$date" | wc -l`
+
+        if [ "$results" -gt "0" ]; then
+            mpc -q clear && mpc findadd title "$title" artist "$artist" album "$album" date "$date" && mpc -q play
+        fi
+        ;;
+esac
+
+toshuffle=`echo -e "No\nYes" | smenu "Shuffle?" "$1"`
+
+if [ "$toshuffle" == "Yes" ]; then
+    mpc shuffle
+fi
+

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [[ "$3" ]]; then
+
+    dmenu -i -p "$1" -fn "Noto Sans CJK JP:pixelsize=12" -h 24 -x $(expr $(scrdim x "$2") + 14) -y 14 -w $(expr $(scrdim w "$2") - 28) -nb "#39404f" -sb "#5E81AC" "$3"
+
+else
+
+    dmenu -i -p "$1" -fn "Noto Sans CJK JP:pixelsize=12" -h 24 -x $(expr $(scrdim x "$2") + 14) -y 14 -w $(expr $(scrdim w "$2") - 28) -nb "#39404f" -sb "#5E81AC"
+
+fi

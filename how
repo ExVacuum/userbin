@@ -1,0 +1,2 @@
+#!/bin/sh
+maim -s | magick - -bordercolor black -border 5 -bordercolor white -border 1 -bordercolor black -border "%[fx:w/4]"x"%[fx:h/4]" -font Times-Roman -fill white -pointsize "%[fx:(h/12)]" -gravity center -annotate +0+"%[fx:(5*h/12)]" "How" png: | xclip -selection clipboard -t image/png

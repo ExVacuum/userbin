@@ -1,0 +1,23 @@
+#!/bin/bash
+set -x
+
+# Unload VFIO
+modprobe -r vfio_pci
+modprobe -r vfio_iommu_type1
+modprobe -r vfio
+
+# Unbind the GPU from display driver
+virsh nodedev-reattach pci_0000_01_00_0
+virsh nodedev-reattach pci_0000_01_00_1
+virsh nodedev-reattach pci_0000_01_00_2
+virsh nodedev-reattach pci_0000_01_00_3
+
+# Load NVidia
+modprobe nvidia_uvm
+modprobe nvidia_drm
+modprobe nvidia_modeset
+modprobe nvidia
+
+# Restart session with GPU set to Hybrid
+optimus-manager --no-confirm --switch hybrid
+systemctl restart display-manager.service

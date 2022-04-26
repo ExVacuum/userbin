@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mpv --demuxer-lavf-format=video4linux2 av://v4l2:/dev/video"$1" --profile=low-latency --untimed

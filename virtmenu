@@ -1,0 +1,25 @@
+#!/bin/sh
+
+vm=`VBoxManage list vms -s | awk '{print $1}' | tr -d \" | smenu "Choose VM:" "$1"`
+
+if [ "$vm" ]; then
+    action=`echo -e "Start\nStart Headless\nRestart\nPower Off\nShutdown" | smenu "Choose Action:"`
+    case "$action" in
+        "Start")
+            VBoxManage startvm "$vm" --type separate
+            ;;
+        "Start Headless")
+            VBoxManage startvm "$vm" --type headless
+            ;;
+        "Restart")
+            VBoxManage controlvm "$vm" reset
+            ;;
+        "Power Off")
+            VBoxManage controlvm "$vm" poweroff
+            ;;
+        "Shutdown")
+            VBoxManage controlvm "$vm" acpipowerbutton
+            ;;
+    esac
+fi
+

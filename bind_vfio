@@ -1,0 +1,26 @@
+#!/bin/sh
+set -x
+
+# Shut down display to release GPU
+optimus-manager --no-confirm --switch integrated
+systemctl stop display-manager.service
+
+# Unload NVidia
+modprobe -r nvidia_uvm
+modprobe -r nvidia_drm
+modprobe -r nvidia_modeset
+modprobe -r nvidia
+
+# Unbind the GPU from display driver
+virsh nodedev-detach pci_0000_01_00_0
+virsh nodedev-detach pci_0000_01_00_1
+virsh nodedev-detach pci_0000_01_00_2
+virsh nodedev-detach pci_0000_01_00_3
+
+# Load VFIO
+modprobe vfio_pci
+modprobe vfio_iommu_type1
+modprobe vfio
+
+# Restart display
+systemctl restart display-manager.service

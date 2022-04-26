@@ -1,0 +1,3 @@
+#!/bin/sh
+
+magick "$1" -background "$2" -alpha remove -alpha off "$1"

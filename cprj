@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# FILE: cprj
+# AUTHOR: Silas Bartha
+# VERSION: 1.1.0
+# DESCRIPTION: C/C++ project generation tool
+
+function usage {
+    echo "Usage: cprj [prjName | slnName prj1 [prj2...]]"
+    exit 1
+}
+
+mkdir "$1" "$1/bin" "$1/inc" "$1/obj" "$1/src"
+
+
